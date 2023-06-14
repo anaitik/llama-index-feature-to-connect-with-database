@@ -1,1 +1,41 @@
+ feature that allows me to connect to the guidance database and send a result query to the language model. Please check how vector stores work in the Llama index.
 
+
+
+
+
+The provided code demonstrates an example implementation that connects to a guidance database and uses the Llama index for querying and obtaining responses from the language model. Here's an explanation of the code:
+
+Importing necessary modules: The required modules such as pymongo, os, and relevant components from the Llama index and LangChain libraries are imported.
+
+Setting the OpenAI API key: The OpenAI API key is set as an environment variable using os.environ["OPENAI_API_KEY"] to authenticate API requests.
+
+Establishing a connection to the guidance database: The code establishes a connection to a MongoDB database using the pymongo library. The MongoDB connection URL and database details are provided to create a connection to the desired collection.
+
+Initializing the node parser: A node parser is initialized to extract information from the documents in the index. In this case, the SimpleNodeParser is used.
+
+Defining the construct_index function: This function constructs the Llama index from the documents in a specified directory. It takes the directory path as an argument and returns the constructed index.
+
+Inside the construct_index function:
+
+Various parameters related to index construction, such as max_input_size, num_outputs, chunk_overlap_ratio, and chunk_size_limit, are set.
+A SimpleDirectoryReader is created to load the data/documents from the specified directory.
+The PromptHelper and LLMPredictor instances are initialized to assist with generating prompts and predicting responses using the OpenAI language model.
+A ServiceContext is created using the LLMPredictor and PromptHelper instances.
+The GPTVectorStoreIndex is constructed from the loaded documents and the service context.
+The constructed index is persisted to a specified directory using the persist method of StorageContext.
+The constructed index is returned.
+Calling the construct_index function: The construct_index function is called with the path of the directory containing the documents ("./docs") to create the Llama index. The persisted index is saved in the "./entire_docs" directory.
+
+Creating a StorageContext and loading the index: A StorageContext is created with the directory path where the index was persisted. The load_index_from_storage function is then used to load the index from the specified storage context.
+
+Initializing the query engine: The loaded index is converted into a query engine, which allows for querying the index and retrieving responses. The query engine is stored in the query_engine variable.
+
+Entering an interactive loop: The code enters an infinite loop to interact with the user as a chatbot.
+
+User input is obtained using input("YOU : ").
+The code retrieves the guidance result associated with the user's input from the database. If a guidance result is found, the guidance text is appended to the user's input.
+The query engine is used to query the index with the modified user input, and the response from the model is obtained.
+The response is printed as the bot's reply, along with a newline character ('\n'), to format the output.
+The loop continues, allowing the user to enter new input and obtain responses.
+Please note that the code assumes the necessary installations of packages and correct setup of the MongoDB database, including the presence of documents in the specified directory ("./docs").
